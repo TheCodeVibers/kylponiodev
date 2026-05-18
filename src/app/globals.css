@@ -1,0 +1,157 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-void: #04030a;
+  --color-deep: #0a0814;
+  --color-neon-cyan: #00fff0;
+  --color-neon-blue: #00aaff;
+  --color-neon-purple: #b266ff;
+  --color-neon-magenta: #ff3df0;
+  --color-neon-acid: #c0ff00;
+  --color-ink-100: #f6f8ff;
+  --color-ink-200: #b9c0e0;
+  --color-ink-300: #7a83b3;
+  --color-ink-400: #424a73;
+
+  /* Fonts (vars set by next/font in layout.tsx) */
+  --font-display: var(--font-orbitron), system-ui, sans-serif;
+  --font-ui: var(--font-rajdhani), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+
+  /* Easings */
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snap: cubic-bezier(0.7, 0, 0.3, 1);
+
+  /* Animations */
+  --animate-scan-shift: scanShift 8s linear infinite;
+  --animate-float-bob: floatBob 6s ease-in-out infinite;
+  --animate-pulse-slow: pulse 3s ease-in-out infinite;
+}
+
+@keyframes scanShift {
+  from { background-position: 0 0; }
+  to   { background-position: 0 200px; }
+}
+
+@keyframes floatBob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes angle-spin { to { --angle: 360deg; } }
+
+/* Base */
+html, body {
+  background: var(--color-void);
+  color: var(--color-ink-100);
+  min-height: 100%;
+}
+body {
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* Hide native cursor on hover-capable devices (replaced by custom) */
+@media (hover: hover) and (pointer: fine) {
+  html, body, a, button, [role="button"], input, textarea, select, * {
+    cursor: none !important;
+  }
+}
+
+/* Scanline overlay (applied to a fixed inset-0 element) */
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.04) 0 1px,
+    transparent 1px 3px
+  );
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  animation: scanShift 8s linear infinite;
+}
+
+/* Neon text utilities */
+.neon-cyan {
+  color: #c8fffb;
+  text-shadow:
+    0 0 6px #00fff0,
+    0 0 16px rgba(0, 255, 240, 0.67),
+    0 0 32px rgba(0, 170, 255, 0.4);
+}
+.neon-magenta {
+  color: #ffd5fb;
+  text-shadow:
+    0 0 6px #ff3df0,
+    0 0 16px rgba(255, 61, 240, 0.67),
+    0 0 32px rgba(178, 102, 255, 0.4);
+}
+.neon-text-gradient {
+  background: linear-gradient(135deg, #00fff0 0%, #b266ff 50%, #ff3df0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Conic-gradient animated border for project cards */
+.glow-border {
+  position: relative;
+  background: var(--color-deep);
+  border-radius: 1rem;
+}
+.glow-border::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  z-index: -1;
+  background: conic-gradient(
+    from var(--angle),
+    transparent 0deg,
+    var(--color-neon-cyan) 60deg,
+    var(--color-neon-purple) 120deg,
+    transparent 180deg
+  );
+  animation: angle-spin 6s linear infinite;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-void); }
+::-webkit-scrollbar-thumb {
+  background: var(--color-neon-purple);
+  opacity: 0.5;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--color-neon-cyan); }
+
+/* Selection */
+::selection {
+  background: var(--color-neon-cyan);
+  color: var(--color-void);
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--color-neon-cyan);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
