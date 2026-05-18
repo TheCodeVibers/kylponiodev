@@ -9,21 +9,18 @@ export function NavDock() {
   const leaveDesk = useSceneStore((s) => s.leaveDesk);
   const stopGuitar = useSceneStore((s) => s.stopGuitar);
   const triggerGuitar = useSceneStore((s) => s.triggerGuitar);
+  const sitAtDesk = useSceneStore((s) => s.sitAtDesk);
 
   const isHero = camera === "HERO";
 
   function handleBack() {
-    if (camera === "DESK_FOCUS") {
-      leaveDesk();
-    } else if (camera === "GUITAR_FOCUS") {
-      stopGuitar();
-    } else {
-      setCamera("HERO");
-    }
+    if (camera === "DESK_FOCUS") leaveDesk();
+    else if (camera === "GUITAR_FOCUS") stopGuitar();
+    else setCamera("HERO");
   }
 
   return (
-    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-30 pointer-events-auto">
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-30 pointer-events-auto w-full max-w-sm px-4 sm:px-0 sm:w-auto">
       <AnimatePresence mode="wait">
         {isHero ? (
           <motion.div
@@ -32,7 +29,7 @@ export function NavDock() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 16 }}
             transition={{ duration: 0.5, delay: 1.8 }}
-            className="flex items-center gap-3"
+            className="flex flex-wrap items-center justify-center gap-2"
           >
             <NeonButton variant="cyan" onClick={() => setCamera("ABOUT")}>
               About
@@ -43,7 +40,10 @@ export function NavDock() {
             <NeonButton variant="magenta" onClick={() => setCamera("CONTACT")}>
               Contact
             </NeonButton>
-            <NeonButton variant="cyan" onClick={() => triggerGuitar()}>
+            <NeonButton variant="cyan" onClick={() => sitAtDesk()}>
+              Desk
+            </NeonButton>
+            <NeonButton variant="purple" onClick={() => triggerGuitar()}>
               Guitar
             </NeonButton>
           </motion.div>
@@ -54,6 +54,7 @@ export function NavDock() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 16 }}
             transition={{ duration: 0.3 }}
+            className="flex justify-center"
           >
             <NeonButton variant="purple" onClick={handleBack}>
               ← Back

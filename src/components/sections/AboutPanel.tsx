@@ -50,7 +50,7 @@ export function AboutPanel() {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 40 }}
           transition={{ duration: 0.4 }}
-          className="fixed top-1/2 -translate-y-1/2 right-6 z-20 w-80 pointer-events-auto"
+          className="fixed top-1/2 -translate-y-1/2 right-2 sm:right-6 z-20 w-[calc(100vw-1rem)] max-w-xs sm:w-80 pointer-events-auto"
         >
           <GlassPanel glow="cyan" className="p-6 flex flex-col gap-4">
             <span className="neon-cyan font-ui text-xs tracking-widest">// ABOUT.EXE</span>

@@ -10,11 +10,14 @@ interface CamPreset {
   mouseInfluence: number;
 }
 
+// Mobile gets a pulled-back, wider-angle hero view so desk + guitar are visible
+const IS_MOBILE = typeof window !== "undefined" && window.innerWidth < 768;
+
 const PRESETS: Partial<Record<CameraMode, CamPreset>> = {
   HERO: {
-    pos: new THREE.Vector3(0, 1.6, 6),
-    look: new THREE.Vector3(0, 1.1, 0),
-    mouseInfluence: 1.0,
+    pos: IS_MOBILE ? new THREE.Vector3(0, 1.9, 9.5) : new THREE.Vector3(0, 1.6, 6),
+    look: new THREE.Vector3(0, 1.0, 0),
+    mouseInfluence: IS_MOBILE ? 0.3 : 1.0,
   },
   GAME_FULLSCREEN: {
     pos: new THREE.Vector3(-0.4, 1.3, 2.8),
